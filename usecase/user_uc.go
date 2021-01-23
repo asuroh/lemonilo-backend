@@ -2,13 +2,13 @@ package usecase
 
 import (
 	"errors"
-	"majoo-backend/helper"
-	"majoo-backend/model"
-	"majoo-backend/pkg/bcrypt"
-	"majoo-backend/pkg/logruslogger"
-	"majoo-backend/pkg/str"
-	"majoo-backend/server/request"
-	"majoo-backend/usecase/viewmodel"
+	"lemonilo-backend/helper"
+	"lemonilo-backend/model"
+	"lemonilo-backend/pkg/bcrypt"
+	"lemonilo-backend/pkg/logruslogger"
+	"lemonilo-backend/pkg/str"
+	"lemonilo-backend/server/request"
+	"lemonilo-backend/usecase/viewmodel"
 	"strings"
 	"time"
 )

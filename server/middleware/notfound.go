@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	apiHandler "majoo-backend/server/handler"
+	apiHandler "lemonilo-backend/server/handler"
 
 	"github.com/go-chi/chi"
 )

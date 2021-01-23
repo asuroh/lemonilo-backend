@@ -9,7 +9,7 @@ import (
 
 const (
 	// TOPIC for setting topic of log
-	TOPIC = "majoo-backend"
+	TOPIC = "lemonilo-backend"
 	// ErrorLevel ...
 	ErrorLevel = log.ErrorLevel
 	// WarnLevel ...

@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
-	"majoo-backend/pkg/jwe"
-	"majoo-backend/pkg/jwt"
-	"majoo-backend/pkg/str"
-	"majoo-backend/usecase"
+	"lemonilo-backend/pkg/jwe"
+	"lemonilo-backend/pkg/jwt"
+	"lemonilo-backend/pkg/str"
+	"lemonilo-backend/usecase"
 
 	"database/sql"
 

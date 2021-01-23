@@ -1,15 +1,15 @@
 package main
 
 import (
-	"majoo-backend/pkg/env"
-	"majoo-backend/pkg/interfacepkg"
-	"majoo-backend/pkg/jwe"
-	"majoo-backend/pkg/jwt"
-	"majoo-backend/pkg/logruslogger"
-	"majoo-backend/pkg/pg"
-	"majoo-backend/pkg/str"
-	boot "majoo-backend/server/bootstrap"
-	"majoo-backend/usecase"
+	"lemonilo-backend/pkg/env"
+	"lemonilo-backend/pkg/interfacepkg"
+	"lemonilo-backend/pkg/jwe"
+	"lemonilo-backend/pkg/jwt"
+	"lemonilo-backend/pkg/logruslogger"
+	"lemonilo-backend/pkg/pg"
+	"lemonilo-backend/pkg/str"
+	boot "lemonilo-backend/server/bootstrap"
+	"lemonilo-backend/usecase"
 	"os"
 	"strings"
 

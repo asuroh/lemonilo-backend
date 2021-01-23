@@ -1,9 +1,9 @@
 package bootstrap
 
 import (
-	"majoo-backend/pkg/logruslogger"
-	api "majoo-backend/server/handler"
-	"majoo-backend/server/middleware"
+	"lemonilo-backend/pkg/logruslogger"
+	api "lemonilo-backend/server/handler"
+	"lemonilo-backend/server/middleware"
 
 	chimiddleware "github.com/go-chi/chi/middleware"
 

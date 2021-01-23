@@ -11,8 +11,8 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 
-	apiHandler "majoo-backend/server/handler"
-	"majoo-backend/usecase"
+	apiHandler "lemonilo-backend/server/handler"
+	"lemonilo-backend/usecase"
 )
 
 type jwtClaims struct {

@@ -3,13 +3,13 @@ package usecase
 import (
 	"encoding/json"
 	"errors"
-	"majoo-backend/pkg/jwe"
-	"majoo-backend/pkg/jwt"
-	"majoo-backend/pkg/logruslogger"
+	"lemonilo-backend/pkg/jwe"
+	"lemonilo-backend/pkg/jwt"
+	"lemonilo-backend/pkg/logruslogger"
 	"time"
 
 	"database/sql"
-	"majoo-backend/usecase/viewmodel"
+	"lemonilo-backend/usecase/viewmodel"
 
 	"github.com/go-redis/redis/v7"
 	"github.com/streadway/amqp"

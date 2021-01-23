@@ -5,7 +5,7 @@ package middleware
 
 import (
 	"fmt"
-	apiHandler "majoo-backend/server/handler"
+	apiHandler "lemonilo-backend/server/handler"
 	"net/http"
 	"runtime/debug"
 

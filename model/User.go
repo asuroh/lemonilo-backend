@@ -2,7 +2,7 @@ package model
 
 import (
 	"database/sql"
-	"majoo-backend/usecase/viewmodel"
+	"lemonilo-backend/usecase/viewmodel"
 	"strings"
 	"time"
 )

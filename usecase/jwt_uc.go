@@ -2,9 +2,9 @@ package usecase
 
 import (
 	"errors"
-	"majoo-backend/helper"
-	"majoo-backend/pkg/logruslogger"
-	"majoo-backend/usecase/viewmodel"
+	"lemonilo-backend/helper"
+	"lemonilo-backend/pkg/logruslogger"
+	"lemonilo-backend/usecase/viewmodel"
 
 	"github.com/rs/xid"
 )

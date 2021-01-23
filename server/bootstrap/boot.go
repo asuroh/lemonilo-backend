@@ -1,9 +1,9 @@
 package bootstrap
 
 import (
-	"majoo-backend/pkg/jwe"
-	"majoo-backend/pkg/jwt"
-	"majoo-backend/usecase"
+	"lemonilo-backend/pkg/jwe"
+	"lemonilo-backend/pkg/jwt"
+	"lemonilo-backend/usecase"
 
 	"database/sql"
 

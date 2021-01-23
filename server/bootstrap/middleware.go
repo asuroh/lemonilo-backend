@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
-	"majoo-backend/pkg/str"
-	appMW "majoo-backend/server/middleware"
+	"lemonilo-backend/pkg/str"
+	appMW "lemonilo-backend/server/middleware"
 )
 
 // RegisterMiddleware ...

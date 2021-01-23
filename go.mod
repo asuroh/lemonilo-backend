@@ -1,4 +1,4 @@
-module majoo-backend
+module lemonilo-backend
 
 go 1.13
 

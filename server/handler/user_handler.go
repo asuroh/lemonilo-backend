@@ -2,10 +2,10 @@ package handler
 
 import (
 	"io/ioutil"
-	"majoo-backend/helper"
-	"majoo-backend/pkg/str"
-	"majoo-backend/server/request"
-	"majoo-backend/usecase"
+	"lemonilo-backend/helper"
+	"lemonilo-backend/pkg/str"
+	"lemonilo-backend/server/request"
+	"lemonilo-backend/usecase"
 	"net/http"
 	"strconv"
 

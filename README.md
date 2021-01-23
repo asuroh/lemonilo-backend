@@ -1,4 +1,4 @@
-# majoo-backend 
+# lemonilo-backend 
 
 
 ## Requirement
@@ -12,7 +12,7 @@
 Step 1 
 create database run query : 
 ```
-    CREATE database majoo-backend;
+    CREATE database lemonilo-backend;
 ```
 
 create table and insert data dummy :
@@ -37,7 +37,7 @@ go run main.go
 Step 4
 - Configuration Postman
 Postman collection : 
-    in file majoo-backend.postman_collection.json
+    in file lemonilo-backend.postman_collection.json
 Postman Env : 
     in file Local.postman_environment.json
 
