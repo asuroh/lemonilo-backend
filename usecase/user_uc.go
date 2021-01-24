@@ -23,10 +23,13 @@ func (uc UserUC) BuildBody(data *model.UserEntity, res *viewmodel.UserVM, isShow
 
 	res.ID = data.ID
 	res.Name = data.Name.String
+	res.Email = data.Email.String
+	res.Address = data.Address.String
 	res.UserName = data.UserName
 	res.Password = str.ShowString(isShowPassword, data.Password)
+	res.Role = data.Role
 	if data.ImagePath.String != "" {
-		res.ImagePath = uc.EnvConfig["APP_IMAGE_URL"] + uc.EnvConfig["FILE_PATH"] + "/" + data.ImagePath.String
+		res.ImagePath = uc.EnvConfig["APP_IMAGE_URL"] + uc.EnvConfig["FILE_PATH"] + data.ImagePath.String
 	}
 	res.CreatedAt = data.CreatedAt
 	res.UpdatedAt = data.UpdatedAt
@@ -145,12 +148,15 @@ func (uc UserUC) CheckDetails(data *request.UserRequest, oldData *viewmodel.User
 		return errors.New(helper.InvalidPassword)
 	}
 
-	// Decrypt password input
 	if data.Password == "" {
 		data.Password = oldData.Password
 	}
 
-	// Encrypt password
+	if len(data.Password) < 8 {
+		logruslogger.Log(logruslogger.WarnLevel, "", ctx, "password_length", uc.ReqID)
+		return errors.New(helper.InvalidPassword)
+	}
+
 	data.Password, err = bcrypt.HashPassword(data.Password)
 	if err != nil {
 		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "encrypt_password", uc.ReqID)
@@ -173,8 +179,11 @@ func (uc UserUC) Create(data *request.UserRequest) (res viewmodel.UserVM, err er
 	now := time.Now().UTC()
 	res = viewmodel.UserVM{
 		Name:      data.Name,
+		Email:     data.Email,
+		Address:   data.Address,
 		UserName:  data.UserName,
 		Password:  data.Password,
+		Role:      data.Role,
 		CreatedAt: now.Format(time.RFC3339),
 		UpdatedAt: now.Format(time.RFC3339),
 	}
@@ -207,6 +216,8 @@ func (uc UserUC) Update(id string, data *request.UserRequest) (res viewmodel.Use
 	now := time.Now().UTC()
 	res = viewmodel.UserVM{
 		Name:      data.Name,
+		Email:     data.Email,
+		Address:   data.Address,
 		UserName:  data.UserName,
 		UpdatedAt: now.Format(time.RFC3339),
 	}
@@ -227,11 +238,41 @@ func (uc UserUC) UpdateImage(id string, data *request.UserUploadImageRequest) (r
 	now := time.Now().UTC()
 	res = viewmodel.UserUploadImageVM{
 		ID:        id,
-		Path:      uc.EnvConfig["APP_IMAGE_URL"] + uc.EnvConfig["FILE_PATH"] + "/" + data.Path,
+		Path:      uc.EnvConfig["APP_IMAGE_URL"] + uc.EnvConfig["FILE_PATH"] + data.Path,
 		CreatedAt: now.Format(time.RFC3339),
 	}
 	m := model.NewUserModel(uc.DB)
 	res.ID, err = m.UpdateImage(id, data.Path, now)
+	if err != nil {
+		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "query", uc.ReqID)
+		return res, err
+	}
+
+	return res, err
+}
+
+// UpdatePassword ...
+func (uc UserUC) UpdatePassword(id string, data *request.UserUpdatePasswordRequest) (res viewmodel.UserVM, err error) {
+	ctx := "UserUC.UpdatePassword"
+
+	if len(data.Password) < 8 {
+		logruslogger.Log(logruslogger.WarnLevel, "", ctx, "password_length", uc.ReqID)
+		return res, errors.New(helper.InvalidPassword)
+	}
+
+	password, err := bcrypt.HashPassword(data.Password)
+	if err != nil {
+		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "encrypt_password", uc.ReqID)
+		return res, err
+	}
+
+	now := time.Now().UTC()
+	res = viewmodel.UserVM{
+		ID:        id,
+		CreatedAt: now.Format(time.RFC3339),
+	}
+	m := model.NewUserModel(uc.DB)
+	res.ID, err = m.UpdatePassword(id, password, now)
 	if err != nil {
 		logruslogger.Log(logruslogger.WarnLevel, err.Error(), ctx, "query", uc.ReqID)
 		return res, err

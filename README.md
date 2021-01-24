@@ -39,9 +39,9 @@ Step 4
 Postman collection : 
     in file lemonilo-backend.postman_collection.json
 Postman Env : 
-    in file Local.postman_environment.json
+    in file lemonilo-backend.postman_environment.json
 
 
 ## User Dummy 
-username = thoriq007 
+username = admin007 
 password = kiasu123

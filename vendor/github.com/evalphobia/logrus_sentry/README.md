@@ -114,7 +114,7 @@ Some logrus fields have a special meaning in this hook, and they will be especia
 | Field key  | Description |
 | ------------- | ------------- |
 | `event_id`  | Each logged event is identified by the `event_id`, which is hexadecimal string representing a UUID4 value. You can manually specify the identifier of a log event by supplying this field.  The `event_id` string should be in one of the following UUID format: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` and `urn:uuid:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)|
-| `user_name`  | Name of the user who is in the context of the event  |
+| `username`  | Name of the user who is in the context of the event  |
 | `user_email`  | Email of the user who is in the context of the event |
 | `user_id`  | ID of the user who is in the context of the event |
 | `user_ip`  | IP of the user who is in the context of the event |

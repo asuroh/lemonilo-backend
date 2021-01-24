@@ -11,6 +11,7 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 
+	"lemonilo-backend/model"
 	apiHandler "lemonilo-backend/server/handler"
 	"lemonilo-backend/usecase"
 )
@@ -34,7 +35,7 @@ func userContextInterface(ctx context.Context, req *http.Request, subject string
 	return context.WithValue(ctx, subject, body)
 }
 
-func (m VerifyMiddlewareInit) verifyJWT(r *http.Request, role string, singleLogin bool) (res map[string]interface{}, err error) {
+func (m VerifyMiddlewareInit) verifyJWT(r *http.Request) (res map[string]interface{}, err error) {
 	claims := &jwtClaims{}
 
 	tokenAuthHeader := r.Header.Get("Authorization")
@@ -65,21 +66,10 @@ func (m VerifyMiddlewareInit) verifyJWT(r *http.Request, role string, singleLogi
 		return res, errors.New("Error when load the payload!")
 	}
 
-	if singleLogin && role == "user" {
-		var deviceID string
-		err = m.ContractUC.GetFromRedis("userDeviceID"+res["id"].(string), &deviceID)
-		if err != nil {
-			return res, errors.New("Invalid Device!")
-		}
-		if deviceID != res["device_id"].(string) {
-			return res, errors.New("Expired Device Token!")
-		}
-	}
-
 	return res, nil
 }
 
-func (m VerifyMiddlewareInit) verifyRefreshJWT(r *http.Request, role string) (res map[string]interface{}, err error) {
+func (m VerifyMiddlewareInit) verifyRefreshJWT(r *http.Request) (res map[string]interface{}, err error) {
 	claims := &jwtClaims{}
 
 	tokenAuthHeader := r.Header.Get("Authorization")
@@ -110,21 +100,13 @@ func (m VerifyMiddlewareInit) verifyRefreshJWT(r *http.Request, role string) (re
 		return res, errors.New("Error when load the payload!")
 	}
 
-	// Check if the token provided has a valid role
-	if res["role"] == nil {
-		return res, errors.New("Invalid " + role + " token!")
-	}
-	if res["role"].(string) != role {
-		return res, errors.New("Not an " + role + " token!")
-	}
-
 	return res, nil
 }
 
-// VerifyUserTokenCredential ...
-func (m VerifyMiddlewareInit) VerifyUserTokenCredential(next http.Handler) http.Handler {
+// VerifyAdminTokenCredential ...
+func (m VerifyMiddlewareInit) VerifyAdminTokenCredential(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		jweRes, err := m.verifyJWT(r, "user", false)
+		jweRes, err := m.verifyJWT(r)
 		if err != nil {
 			apiHandler.RespondWithJSON(w, 401, 401, err.Error(), []map[string]interface{}{}, []map[string]interface{}{})
 			return
@@ -138,7 +120,40 @@ func (m VerifyMiddlewareInit) VerifyUserTokenCredential(next http.Handler) http.
 			return
 		}
 
-		jweRes["user_name"] = user.UserName
+		if user.Role != model.RoleCodeAdmin {
+			apiHandler.RespondWithJSON(w, 401, 401, "Admin only access!", []map[string]interface{}{}, []map[string]interface{}{})
+			return
+		}
+
+		jweRes["username"] = user.UserName
+		jweRes["email"] = user.Email
+		jweRes["role"] = user.Role
+
+		ctx := userContextInterface(r.Context(), r, "admin", jweRes)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+// VerifyUserTokenCredential ...
+func (m VerifyMiddlewareInit) VerifyUserTokenCredential(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jweRes, err := m.verifyJWT(r)
+		if err != nil {
+			apiHandler.RespondWithJSON(w, 401, 401, err.Error(), []map[string]interface{}{}, []map[string]interface{}{})
+			return
+		}
+
+		// Check id in table
+		userUC := usecase.UserUC{ContractUC: m.ContractUC}
+		user, err := userUC.FindByID(jweRes["id"].(string), false)
+		if user.ID == "" {
+			apiHandler.RespondWithJSON(w, 401, 401, "Not found!", []map[string]interface{}{}, []map[string]interface{}{})
+			return
+		}
+
+		jweRes["username"] = user.UserName
+		jweRes["email"] = user.Email
+		jweRes["role"] = user.Role
 
 		ctx := userContextInterface(r.Context(), r, "user", jweRes)
 		next.ServeHTTP(w, r.WithContext(ctx))

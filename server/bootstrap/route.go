@@ -53,15 +53,16 @@ func (boot *Bootup) RegisterRoutes() {
 					r.Post("/login", userHandler.LoginHandler)
 				})
 				r.Group(func(r chi.Router) {
-					r.Use(mJwt.VerifyUserTokenCredential)
+					r.Use(mJwt.VerifyAdminTokenCredential)
 					r.Post("/", userHandler.CreateHandler)
 					r.Put("/id/{id}", userHandler.UpdateHandler)
-					r.Post("/profile", userHandler.UploadImageHandler)
 					r.Delete("/id/{id}", userHandler.DeleteHandler)
 				})
 				r.Group(func(r chi.Router) {
 					r.Use(mJwt.VerifyUserTokenCredential)
 					r.Get("/", userHandler.GetAllHandler)
+					r.Put("/profile", userHandler.UploadImageHandler)
+					r.Put("/changePassword", userHandler.UpdatePasswordHandler)
 					r.Get("/id/{id}", userHandler.GetByIDHandler)
 				})
 			})

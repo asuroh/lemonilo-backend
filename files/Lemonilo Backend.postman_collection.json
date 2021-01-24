@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "e5deb167-1fe0-436a-aac1-ae1bf4c508e4",
+		"name": "Lemonilo Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"var token = jsonData.data.token;",
+											"pm.environment.set(\"token\", token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin007\",\n    \"password\": \"kiasu123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api/user/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Admin Access",
+							"item": [
+								{
+									"name": "Create",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"_comment\" : {\n       \"password\" :  \"length min = 8\",\n       \"role\" : \"admin or user\"\n    },\n    \"name\": \"thoriq\",\n    \"email\": \"thoriq.azizasuro@gmail.com\",\n    \"address\": \"jl. kalianak\",\n    \"username\": \"thoriq008\",\n    \"password\": \"\",\n    \"role\": \"user\",\n    \"image_id\" : \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/v1/api/user",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"v1",
+												"api",
+												"user"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"_comment\" : {\n       \"password\" :  \"length min = 8\"\n    },\n    \"name\": \"thoriq aziz asuro\",\n    \"email\": \"thoriq.azizasuro@gmail.com\",\n    \"address\": \"jl. kalianak re\",\n    \"username\": \"thoriq007\",\n    \"role\": \"user\",\n    \"image_id\" : \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/v1/api/user/id/406de8b0-f58e-44e2-bfdb-31e01abbaa60",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"v1",
+												"api",
+												"user",
+												"id",
+												"406de8b0-f58e-44e2-bfdb-31e01abbaa60"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/v1/api/user/id/406de8b0-f58e-44e2-bfdb-31e01abbaa60",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"v1",
+												"api",
+												"user",
+												"id",
+												"406de8b0-f58e-44e2-bfdb-31e01abbaa60"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/api/user?page=1&limit=5&search=&by=&sort",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"user"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "5",
+											"description": "max 50 default 10"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "by username or name"
+										},
+										{
+											"key": "by",
+											"value": "",
+											"description": "filter data by created_at, updated_at default created_at"
+										},
+										{
+											"key": "sort",
+											"value": null,
+											"description": "filter data by desc, asc default desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/api/user/id/406de8b0-f58e-44e2-bfdb-31e01abbaa60",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"user",
+										"id",
+										"406de8b0-f58e-44e2-bfdb-31e01abbaa60"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "upload image by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/Users/rigel/Desktop/17241-200.png"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api/user/profile",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change password by token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"_comment\" : \"password length min = 8\",\n    \"password\" : \"test12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/api/user/changePassword",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"api",
+										"user",
+										"changePassword"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

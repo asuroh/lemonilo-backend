@@ -3,14 +3,22 @@ package request
 // UserRequest ...
 type UserRequest struct {
 	Name     string `json:"name" `
-	UserName string `json:"user_name" validate:"required"`
-	Password string `json:"password" validate:"required"`
+	Email    string `json:"email"`
+	Address  string `json:"address"`
+	UserName string `json:"username" validate:"required"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
 }
 
 // UserUpdateRequest ...
 type UserUpdateRequest struct {
 	Name     string `json:"name" `
-	UserName string `json:"user_name" validate:"required"`
+	UserName string `json:"username" validate:"required"`
+}
+
+// UserUpdatePasswordRequest ...
+type UserUpdatePasswordRequest struct {
+	Password string `json:"password" validate:"required"`
 }
 
 // UserUploadImageRequest ...
@@ -21,6 +29,6 @@ type UserUploadImageRequest struct {
 
 // UserLoginRequest ....
 type UserLoginRequest struct {
-	UserName string `json:"user_name"`
+	UserName string `json:"username"`
 	Password string `json:"password" validate:"required"`
 }

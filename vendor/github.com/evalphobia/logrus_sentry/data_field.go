@@ -119,7 +119,7 @@ func (d *dataField) getUser() (*raven.User, bool) {
 		}
 	}
 
-	username, _ := data["user_name"].(string)
+	username, _ := data["username"].(string)
 	email, _ := data["user_email"].(string)
 	id, _ := data["user_id"].(string)
 	ip, _ := data["user_ip"].(string)

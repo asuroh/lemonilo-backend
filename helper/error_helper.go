@@ -11,8 +11,10 @@ var (
 	SQLHandlerErrorRowNull = "sql: no rows in result set"
 	// InvalidPassword ...
 	InvalidPassword = "invalid_password"
+	// InvalidRole ...
+	InvalidRole = "invalid_role"
 	// DuplicateUserName ...
-	DuplicateUserName = "duplicate_user_name"
+	DuplicateUserName = "duplicate_username"
 	// FileTooBig uploaded file size is too big
 	FileTooBig = "file_too_big"
 	// FileError fail to read file

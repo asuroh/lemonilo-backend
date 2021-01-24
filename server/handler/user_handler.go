@@ -3,6 +3,7 @@ package handler
 import (
 	"io/ioutil"
 	"lemonilo-backend/helper"
+	"lemonilo-backend/model"
 	"lemonilo-backend/pkg/str"
 	"lemonilo-backend/server/request"
 	"lemonilo-backend/usecase"
@@ -99,6 +100,11 @@ func (h *UserHandler) CreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.Role != model.RoleCodeAdmin && req.Role != model.RoleCodeUser {
+		SendBadRequest(w, helper.InvalidRole)
+		return
+	}
+
 	userUC := usecase.UserUC{ContractUC: h.ContractUC}
 	res, err := userUC.Create(&req)
 	if err != nil {
@@ -176,6 +182,32 @@ func (h *UserHandler) UploadImageHandler(w http.ResponseWriter, r *http.Request)
 	}
 
 	SendSuccess(w, res, nil)
+	return
+}
+
+// UpdatePasswordHandler ...
+func (h *UserHandler) UpdatePasswordHandler(w http.ResponseWriter, r *http.Request) {
+	user := requestIDFromContextInterfaceWithNil(r.Context(), "user")
+	userID := user["id"].(string)
+
+	req := request.UserUpdatePasswordRequest{}
+	if err := h.Handler.Bind(r, &req); err != nil {
+		SendBadRequest(w, err.Error())
+		return
+	}
+	if err := h.Handler.Validate.Struct(req); err != nil {
+		h.SendRequestValidationError(w, err.(validator.ValidationErrors))
+		return
+	}
+
+	userUC := usecase.UserUC{ContractUC: h.ContractUC}
+	_, err := userUC.UpdatePassword(userID, &req)
+	if err != nil {
+		SendBadRequest(w, err.Error())
+		return
+	}
+
+	SendSuccess(w, nil, nil)
 	return
 }
 
